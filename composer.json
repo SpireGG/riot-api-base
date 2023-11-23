@@ -5,7 +5,13 @@
 	"keywords": ["riot", "api", "wrapper", "base", "php7"],
 	"homepage": "https://github.com/spiregg/riot-api-base",
 	"license": "GPL-3.0-or-later",
+	"version": "2.0.0",
 	"authors": [
+		{
+			"name": "Chypriote",
+			"email": "chypriote@lolpros.gg",
+			"role": "Developer"
+		},
 		{
 			"name": "Daniel Dolejška",
 			"email": "dolejskad@gmail.com",
@@ -16,10 +22,9 @@
 		"test": "XDEBUG_MODE=coverage vendor/bin/phpunit tests -v --configuration phpunit.xml --coverage-text --coverage-html build/coverage"
 	},
 	"require": {
-		"guzzlehttp/guzzle": "^7.5|^6.5",
-		"symfony/cache": "^6.2|^5.4",
+		"guzzlehttp/guzzle": "^7.8|^6.5",
+		"symfony/cache": "^6.3|^5.4",
 		"psr/cache": "^3",
-		"psr/cache": "^2.0",
 		"php": ">=8.1",
 		"ext-json": "*"
 	},
