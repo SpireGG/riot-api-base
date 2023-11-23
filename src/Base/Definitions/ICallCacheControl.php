@@ -27,39 +27,39 @@ namespace RiotAPI\Base\Definitions;
  */
 interface ICallCacheControl
 {
-	/**
-	 *   Checks whether or not is $hash call cached.
-	 *
-	 * @param string $hash
-	 *
-	 * @return bool
-	 */
-	public function isCallCached( string $hash ): bool;
+    /**
+     *   Checks whether or not is $hash call cached.
+     *
+     * @param string $hash
+     *
+     * @return bool
+     */
+    public function isCallCached(string $hash): bool;
 
-	/**
-	 *   Loads cached data for given call.
-	 *
-	 * @param string $hash
-	 *
-	 * @return mixed
-	 */
-	public function loadCallData( string $hash ): mixed;
+    /**
+     *   Loads cached data for given call.
+     *
+     * @param string $hash
+     *
+     * @return mixed
+     */
+    public function loadCallData(string $hash): mixed;
 
-	/**
-	 *   Saves given data for call.
-	 *
-	 * @param string $hash
-	 * @param        $data
-	 * @param int    $length
-	 *
-	 * @return bool
-	 */
-	public function saveCallData( string $hash, $data, int $length ): bool;
+    /**
+     *   Saves given data for call.
+     *
+     * @param string $hash
+     * @param        $data
+     * @param int $length
+     *
+     * @return bool
+     */
+    public function saveCallData(string $hash, $data, int $length): bool;
 
-	/**
-	 *   Clears all currently saved data.
-	 *
-	 * @return bool
-	 */
-	public function clear(): bool;
+    /**
+     *   Clears all currently saved data.
+     *
+     * @return bool
+     */
+    public function clear(): bool;
 }

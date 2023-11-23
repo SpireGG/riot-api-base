@@ -25,4 +25,6 @@ namespace RiotAPI\Base\Exceptions;
  *
  * @package RiotAPI\Base\Exceptions
  */
-class UnauthorizedException extends RequestException {}
+class UnauthorizedException extends RequestException
+{
+}

@@ -27,26 +27,26 @@ namespace RiotAPI\Base\Definitions;
  */
 interface IPlatform
 {
-	/**
-	 *   Returns platform list by region.
-	 *
-	 * @return array
-	 */
-	public function getList(): array;
+    /**
+     *   Returns platform list by region.
+     *
+     * @return array
+     */
+    public function getList(): array;
 
-	/**
-	 *   Returns platform name based on region identifier (can either be string or internal numeric ID).
-	 *
-	 * @param $region
-	 * @return string
-	 */
-	public function getPlatformNameOfRegion($region): string;
+    /**
+     *   Returns platform name based on region identifier (can either be string or internal numeric ID).
+     *
+     * @param $region
+     * @return string
+     */
+    public function getPlatformNameOfRegion($region): string;
 
-	/**
-	 *   Returns region name based on platform identifier (can either be string or internal numeric ID).
-	 *
-	 * @param $region
-	 * @return string
-	 */
-	public function getCorrespondingContinentRegion($region): string;
+    /**
+     *   Returns region name based on platform identifier (can either be string or internal numeric ID).
+     *
+     * @param $region
+     * @return string
+     */
+    public function getCorrespondingContinentRegion($region): string;
 }

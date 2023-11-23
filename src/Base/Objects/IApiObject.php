@@ -29,18 +29,18 @@ use RiotAPI\Base\BaseAPI;
  */
 interface IApiObject
 {
-	/**
-	 *   IApiObject constructor. Initializes the object.
-	 *
-	 * @param array   $data The object data
-	 * @param BaseAPI $api  The library instance
-	 */
-	public function __construct(array $data, BaseAPI $api);
+    /**
+     *   IApiObject constructor. Initializes the object.
+     *
+     * @param array $data The object data
+     * @param BaseAPI $api The library instance
+     */
+    public function __construct(array $data, BaseAPI $api);
 
-	/**
-	 *   Gets all the original data fetched from corresponding API.
-	 *
-	 * @return array
-	 */
-	public function getData(): array;
+    /**
+     *   Gets all the original data fetched from corresponding API.
+     *
+     * @return array
+     */
+    public function getData(): array;
 }

@@ -29,96 +29,95 @@ use RiotAPI\Base\Exceptions\GeneralException;
  */
 class Platform implements IPlatform
 {
-	// ==================================================================dd=
-	//     Standard regional platforms
-	// ==================================================================dd=
+    // ==================================================================dd=
+    //     Standard regional platforms
+    // ==================================================================dd=
 
-	const NORTH_AMERICA = 'na1';
-	const EUROPE_WEST = 'euw1';
-	const EUROPE_EAST = 'eun1';
-	const LAMERICA_SOUTH = 'la2';
-	const LAMERICA_NORTH = 'la1';
-	const BRASIL = 'br1';
-	const RUSSIA = 'ru';
-	const TURKEY = 'tr1';
-	const OCEANIA = 'oc1';
-	const KOREA = 'kr';
-	const JAPAN = 'jp1';
+    const NORTH_AMERICA = 'na1';
+    const EUROPE_WEST = 'euw1';
+    const EUROPE_EAST = 'eun1';
+    const LAMERICA_SOUTH = 'la2';
+    const LAMERICA_NORTH = 'la1';
+    const BRASIL = 'br1';
+    const RUSSIA = 'ru';
+    const TURKEY = 'tr1';
+    const OCEANIA = 'oc1';
+    const KOREA = 'kr';
+    const JAPAN = 'jp1';
 
-	const AMERICAS = 'americas';
-	const EUROPE = 'europe';
-	const ASIA = 'asia';
+    const AMERICAS = 'americas';
+    const EUROPE = 'europe';
+    const ASIA = 'asia';
 
-	public static $list = array(
-		IRegion::EUROPE         => self::EUROPE,
-		IRegion::AMERICAS       => self::AMERICAS,
-		IRegion::ASIA           => self::ASIA,
-		Region::NORTH_AMERICA   => self::NORTH_AMERICA,
-		Region::EUROPE_WEST     => self::EUROPE_WEST,
-		Region::EUROPE_EAST     => self::EUROPE_EAST,
-		Region::LAMERICA_SOUTH  => self::LAMERICA_SOUTH,
-		Region::LAMERICA_NORTH  => self::LAMERICA_NORTH,
-		Region::BRASIL          => self::BRASIL,
-		Region::RUSSIA          => self::RUSSIA,
-		Region::TURKEY          => self::TURKEY,
-		Region::OCEANIA         => self::OCEANIA,
-		Region::KOREA           => self::KOREA,
-		Region::JAPAN           => self::JAPAN,
-	);
+    public static $list = array(
+        IRegion::EUROPE => self::EUROPE,
+        IRegion::AMERICAS => self::AMERICAS,
+        IRegion::ASIA => self::ASIA,
+        Region::NORTH_AMERICA => self::NORTH_AMERICA,
+        Region::EUROPE_WEST => self::EUROPE_WEST,
+        Region::EUROPE_EAST => self::EUROPE_EAST,
+        Region::LAMERICA_SOUTH => self::LAMERICA_SOUTH,
+        Region::LAMERICA_NORTH => self::LAMERICA_NORTH,
+        Region::BRASIL => self::BRASIL,
+        Region::RUSSIA => self::RUSSIA,
+        Region::TURKEY => self::TURKEY,
+        Region::OCEANIA => self::OCEANIA,
+        Region::KOREA => self::KOREA,
+        Region::JAPAN => self::JAPAN,
+    );
 
-	public static $continentalRegions = [
-		self::AMERICAS,
-		self::EUROPE,
-		self::ASIA,
-	];
+    public static $continentalRegions = [
+        self::AMERICAS,
+        self::EUROPE,
+        self::ASIA,
+    ];
 
 
-	// ==================================================================dd=
-	//     Control functions
-	// ==================================================================dd=
+    // ==================================================================dd=
+    //     Control functions
+    // ==================================================================dd=
 
-	public function getList(): array
-	{
-		return $this::$list;
-	}
+    public function getList(): array
+    {
+        return $this::$list;
+    }
 
-	/**
-	 * @throws GeneralException
-	 */
-	public function getPlatformNameOfRegion($region): string
-	{
-		if (!isset($this::$list[$region]))
-			throw new GeneralException('Invalid region provided. Can not find requested platform.');
+    /**
+     * @throws GeneralException
+     */
+    public function getPlatformNameOfRegion($region): string
+    {
+        if (!isset($this::$list[$region]))
+            throw new GeneralException('Invalid region provided. Can not find requested platform.');
 
-		return $this::$list[$region];
-	}
+        return $this::$list[$region];
+    }
 
-	/**
-	 * @throws GeneralException
-	 */
-	public function getCorrespondingContinentRegion($region): string
-	{
-		switch ($this->getPlatformNameOfRegion($region))
-		{
-			case Platform::EUROPE_WEST:
-			case Platform::EUROPE_EAST:
-			case Platform::TURKEY:
-			case Platform::RUSSIA:
-				return IRegion::EUROPE;
+    /**
+     * @throws GeneralException
+     */
+    public function getCorrespondingContinentRegion($region): string
+    {
+        switch ($this->getPlatformNameOfRegion($region)) {
+            case Platform::EUROPE_WEST:
+            case Platform::EUROPE_EAST:
+            case Platform::TURKEY:
+            case Platform::RUSSIA:
+                return IRegion::EUROPE;
 
-			case Platform::NORTH_AMERICA:
-			case Platform::LAMERICA_NORTH:
-			case Platform::LAMERICA_SOUTH:
-			case Platform::BRASIL:
-			case Platform::OCEANIA:
-				return IRegion::AMERICAS;
+            case Platform::NORTH_AMERICA:
+            case Platform::LAMERICA_NORTH:
+            case Platform::LAMERICA_SOUTH:
+            case Platform::BRASIL:
+            case Platform::OCEANIA:
+                return IRegion::AMERICAS;
 
-			case Platform::KOREA:
-			case Platform::JAPAN:
-				return IRegion::ASIA;
+            case Platform::KOREA:
+            case Platform::JAPAN:
+                return IRegion::ASIA;
 
-			default:
-				throw new GeneralException("Unable to convert '$region' platform ID to corresponding continent region.");
-		}
-	}
+            default:
+                throw new GeneralException("Unable to convert '$region' platform ID to corresponding continent region.");
+        }
+    }
 }

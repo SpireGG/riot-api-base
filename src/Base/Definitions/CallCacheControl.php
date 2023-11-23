@@ -27,62 +27,62 @@ namespace RiotAPI\Base\Definitions;
  */
 class CallCacheControl implements ICallCacheControl
 {
-	protected CallCacheStorage $storage;
+    protected CallCacheStorage $storage;
 
-	/**
-	 *   CallCacheControl constructor.
-	 */
-	public function __construct()
-	{
-		$this->storage = new CallCacheStorage();
-	}
+    /**
+     *   CallCacheControl constructor.
+     */
+    public function __construct()
+    {
+        $this->storage = new CallCacheStorage();
+    }
 
-	/**
-	 *   Clears all currently saved data.
-	 *
-	 * @return bool
-	 */
-	public function clear(): bool
-	{
-		return $this->storage->clear();
-	}
+    /**
+     *   Clears all currently saved data.
+     *
+     * @return bool
+     */
+    public function clear(): bool
+    {
+        return $this->storage->clear();
+    }
 
-	/**
-	 *   Checks whether or not is $hash call cached.
-	 *
-	 * @param string $hash
-	 *
-	 * @return bool
-	 */
-	public function isCallCached( string $hash ): bool
-	{
-		return $this->storage->isCached($hash);
-	}
+    /**
+     *   Checks whether or not is $hash call cached.
+     *
+     * @param string $hash
+     *
+     * @return bool
+     */
+    public function isCallCached(string $hash): bool
+    {
+        return $this->storage->isCached($hash);
+    }
 
-	/**
-	 *   Loads cached data for given call.
-	 *
-	 * @param string $hash
-	 *
-	 * @return mixed
-	 */
-	public function loadCallData( string $hash ): mixed
-	{
-		return $this->storage->load($hash);
-	}
+    /**
+     *   Loads cached data for given call.
+     *
+     * @param string $hash
+     *
+     * @return mixed
+     */
+    public function loadCallData(string $hash): mixed
+    {
+        return $this->storage->load($hash);
+    }
 
-	/**
-	 *   Saves given data for call.
-	 *
-	 * @param string $hash
-	 * @param        $data
-	 * @param int    $length
-	 *
-	 * @return bool
-	 */
-	public function saveCallData( string $hash, $data, int $length ): bool
-	{
-		$this->storage->save($hash, $data, $length);
-		return true;
-	}
+    /**
+     *   Saves given data for call.
+     *
+     * @param string $hash
+     * @param        $data
+     * @param int $length
+     *
+     * @return bool
+     */
+    public function saveCallData(string $hash, $data, int $length): bool
+    {
+        $this->storage->save($hash, $data, $length);
+        return true;
+    }
 }

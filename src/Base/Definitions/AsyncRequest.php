@@ -29,52 +29,52 @@ use GuzzleHttp\Promise\PromiseInterface;
  */
 class AsyncRequest
 {
-	public Client $client;
-	protected ?PromiseInterface $promise = null;
+    public Client $client;
+    protected ?PromiseInterface $promise = null;
 
-	/** @var callable $onFulfilled */
-	public $onFulfilled;
+    /** @var callable $onFulfilled */
+    public $onFulfilled;
 
-	/** @var callable $onRejected */
-	public $onRejected;
-
-
-	/**
-	 *   AsyncRequest constructor.
-	 *
-	 * @param Client        $client
-	 * @param callable|null $onFulfilled
-	 * @param callable|null $onRejected
-	 */
-	public function __construct(Client $client, callable $onFulfilled = null, callable $onRejected = null)
-	{
-		$this->client = $client;
-		$this->onFulfilled = $onFulfilled;
-		$this->onRejected  = $onRejected;
-	}
+    /** @var callable $onRejected */
+    public $onRejected;
 
 
-	/**
-	 *   Promise setter.
-	 *
-	 * @param PromiseInterface $promise
-	 *
-	 * @return $this
-	 */
-	public function setPromise(PromiseInterface $promise): static
-	{
-		$this->promise = $promise;
-		$promise->then($this->onFulfilled, $this->onRejected);
-		return $this;
-	}
+    /**
+     *   AsyncRequest constructor.
+     *
+     * @param Client $client
+     * @param callable|null $onFulfilled
+     * @param callable|null $onRejected
+     */
+    public function __construct(Client $client, callable $onFulfilled = null, callable $onRejected = null)
+    {
+        $this->client = $client;
+        $this->onFulfilled = $onFulfilled;
+        $this->onRejected = $onRejected;
+    }
 
-	/**
-	 *   Promise getter.
-	 *
-	 * @return PromiseInterface
-	 */
-	public function getPromise(): PromiseInterface
-	{
-		return $this->promise;
-	}
+
+    /**
+     *   Promise setter.
+     *
+     * @param PromiseInterface $promise
+     *
+     * @return $this
+     */
+    public function setPromise(PromiseInterface $promise): static
+    {
+        $this->promise = $promise;
+        $promise->then($this->onFulfilled, $this->onRejected);
+        return $this;
+    }
+
+    /**
+     *   Promise getter.
+     *
+     * @return PromiseInterface
+     */
+    public function getPromise(): PromiseInterface
+    {
+        return $this->promise;
+    }
 }

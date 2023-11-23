@@ -29,11 +29,11 @@ use RiotAPI\Base\BaseAPI;
  */
 interface IApiObjectExtension
 {
-	/**
-	 *   IApiObjectExtension constructor. Initializes the object extension.
-	 *
-	 * @param IApiObject $apiObject The extended object (eg. SummonerDto, etc.)
-	 * @param BaseAPI    $api       The library instance
-	 */
-	public function __construct(IApiObject $apiObject, BaseAPI $api);
+    /**
+     *   IApiObjectExtension constructor. Initializes the object extension.
+     *
+     * @param IApiObject $apiObject The extended object (eg. SummonerDto, etc.)
+     * @param BaseAPI $api The library instance
+     */
+    public function __construct(IApiObject $apiObject, BaseAPI $api);
 }
