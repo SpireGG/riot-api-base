@@ -25,4 +25,6 @@ namespace RiotAPI\Base\Exceptions;
  *
  * @package RiotAPI\Base\Exceptions
  */
-class UnsupportedMediaTypeException extends RequestException {}
+class UnsupportedMediaTypeException extends RequestException
+{
+}

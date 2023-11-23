@@ -24,34 +24,34 @@ use RiotAPI\Base\BaseAPI;
 use RiotAPI\Base\Definitions\AsyncRequest;
 
 class TestBaseAPI extends BaseAPI
-{   
-	public array $resources = [
-		"0:test",
-		"1:resource1",
-		"2:resource2"
-	];
+{
+    public array $resources = [
+        "0:test",
+        "1:resource1",
+        "2:resource2"
+    ];
 
-	/** @var ?AsyncRequest $next_async_request */
-	public ?AsyncRequest $next_async_request = null;
+    /** @var ?AsyncRequest $next_async_request */
+    public ?AsyncRequest $next_async_request = null;
 
-	/** @var AsyncRequest[] $async_requests */
-	public array $async_requests = [];
+    /** @var AsyncRequest[] $async_requests */
+    public array $async_requests = [];
 
-	/** @var Client[] $async_clients */
+    /** @var Client[] $async_clients */
     public array $async_clients = [];
-    
-	public function getCCC()
-	{
-		return $this->ccc;
-	}
 
-	public function getRLC()
-	{
-		return $this->rlc;
-	}
+    public function getCCC()
+    {
+        return $this->ccc;
+    }
 
-	public function saveCache(): bool
-	{
-		return parent::saveCache();
-	}
+    public function getRLC()
+    {
+        return $this->rlc;
+    }
+
+    public function saveCache(): bool
+    {
+        return parent::saveCache();
+    }
 }

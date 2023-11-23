@@ -29,69 +29,69 @@ use RiotAPI\Base\Exceptions\GeneralException;
  */
 class Region implements IRegion
 {
-	// ==================================================================dd=
-	//     Standard game regions (servers)
-	// ==================================================================dd=
+    // ==================================================================dd=
+    //     Standard game regions (servers)
+    // ==================================================================dd=
 
-	const NORTH_AMERICA = 'na';
-	const EUROPE_WEST = 'euw';
-	const EUROPE_EAST = 'eune';
-	const LAMERICA_SOUTH = 'las';
-	const LAMERICA_NORTH = 'lan';
-	const BRASIL = 'br';
-	const RUSSIA = 'ru';
-	const TURKEY = 'tr';
-	const OCEANIA = 'oce';
-	const KOREA = 'kr';
-	const JAPAN = 'jp';
-	const PHILIPPINES = 'ph';
-	const SINGAPORE = 'sg';
-	const TAIWAN = 'tw';
-	const THAILAND = 'th';
-	const VIETNAM = 'vn';
+    const NORTH_AMERICA = 'na';
+    const EUROPE_WEST = 'euw';
+    const EUROPE_EAST = 'eune';
+    const LAMERICA_SOUTH = 'las';
+    const LAMERICA_NORTH = 'lan';
+    const BRASIL = 'br';
+    const RUSSIA = 'ru';
+    const TURKEY = 'tr';
+    const OCEANIA = 'oce';
+    const KOREA = 'kr';
+    const JAPAN = 'jp';
+    const PHILIPPINES = 'ph';
+    const SINGAPORE = 'sg';
+    const TAIWAN = 'tw';
+    const THAILAND = 'th';
+    const VIETNAM = 'vn';
 
-	public static $list = array(
-		self::NORTH_AMERICA   => self::NORTH_AMERICA,
-		self::EUROPE          => self::EUROPE,
-		self::EUROPE_WEST     => self::EUROPE_WEST,
-		self::EUROPE_EAST     => self::EUROPE_EAST,
-		self::LAMERICA_SOUTH  => self::LAMERICA_SOUTH,
-		self::LAMERICA_NORTH  => self::LAMERICA_NORTH,
-		self::BRASIL          => self::BRASIL,
-		self::RUSSIA          => self::RUSSIA,
-		self::TURKEY          => self::TURKEY,
-		self::OCEANIA         => self::OCEANIA,
-		self::ASIA            => self::ASIA,
-		self::KOREA           => self::KOREA,
-		self::JAPAN           => self::JAPAN,
-		self::AMERICAS        => self::AMERICAS,
-		self::SEA             => self::SEA,
-		self::PHILIPPINES     => self::PHILIPPINES,
-		self::SINGAPORE       => self::SINGAPORE,
-		self::TAIWAN          => self::TAIWAN,
-		self::THAILAND        => self::THAILAND,
-		self::VIETNAM         => self::VIETNAM,
-	);
+    public static $list = array(
+        self::NORTH_AMERICA => self::NORTH_AMERICA,
+        self::EUROPE => self::EUROPE,
+        self::EUROPE_WEST => self::EUROPE_WEST,
+        self::EUROPE_EAST => self::EUROPE_EAST,
+        self::LAMERICA_SOUTH => self::LAMERICA_SOUTH,
+        self::LAMERICA_NORTH => self::LAMERICA_NORTH,
+        self::BRASIL => self::BRASIL,
+        self::RUSSIA => self::RUSSIA,
+        self::TURKEY => self::TURKEY,
+        self::OCEANIA => self::OCEANIA,
+        self::ASIA => self::ASIA,
+        self::KOREA => self::KOREA,
+        self::JAPAN => self::JAPAN,
+        self::AMERICAS => self::AMERICAS,
+        self::SEA => self::SEA,
+        self::PHILIPPINES => self::PHILIPPINES,
+        self::SINGAPORE => self::SINGAPORE,
+        self::TAIWAN => self::TAIWAN,
+        self::THAILAND => self::THAILAND,
+        self::VIETNAM => self::VIETNAM,
+    );
 
 
-	// ==================================================================dd=
-	//     Control functions
-	// ==================================================================dd=
+    // ==================================================================dd=
+    //     Control functions
+    // ==================================================================dd=
 
-	public function getList(): array
-	{
-		return $this::$list;
-	}
+    public function getList(): array
+    {
+        return $this::$list;
+    }
 
-	/**
-	 * @throws GeneralException
-	 */
-	public function getRegionName($region): string
-	{
-		$region = strtolower($region);
-		if (!isset($this::$list[$region]))
-			throw new GeneralException('Invalid region provided. Can not find requested region.');
+    /**
+     * @throws GeneralException
+     */
+    public function getRegionName($region): string
+    {
+        $region = strtolower($region);
+        if (!isset($this::$list[$region]))
+            throw new GeneralException('Invalid region provided. Can not find requested region.');
 
-		return $this::$list[$region];
-	}
+        return $this::$list[$region];
+    }
 }

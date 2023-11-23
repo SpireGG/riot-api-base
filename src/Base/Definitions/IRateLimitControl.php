@@ -27,62 +27,62 @@ namespace RiotAPI\Base\Definitions;
  */
 interface IRateLimitControl
 {
-	/**
-	 *   IRateLimitControl constructor.
-	 *
-	 * @param IRegion $region
-	 */
-	public function __construct(IRegion $region);
+    /**
+     *   IRateLimitControl constructor.
+     *
+     * @param IRegion $region
+     */
+    public function __construct(IRegion $region);
 
-	/**
-	 *   Returns currently stored status of limits for given API key, region and endpoint.
-	 *
-	 * @param string $api_key
-	 * @param string $region
-	 * @param string $endpoint
-	 *
-	 * @return array
-	 */
-	public function getCurrentStatus(string $api_key, string $region, string $endpoint): array;
+    /**
+     *   Returns currently stored status of limits for given API key, region and endpoint.
+     *
+     * @param string $api_key
+     * @param string $region
+     * @param string $endpoint
+     *
+     * @return array
+     */
+    public function getCurrentStatus(string $api_key, string $region, string $endpoint): array;
 
-	/**
-	 *   Determines whether or not API call can be made.
-	 *
-	 * @param string $api_key
-	 * @param string $region
-	 * @param string $resource
-	 * @param string $endpoint
-	 *
-	 * @return bool
-	 */
-	public function canCall(string $api_key, string $region, string $resource, string $endpoint): bool;
+    /**
+     *   Determines whether or not API call can be made.
+     *
+     * @param string $api_key
+     * @param string $region
+     * @param string $resource
+     * @param string $endpoint
+     *
+     * @return bool
+     */
+    public function canCall(string $api_key, string $region, string $resource, string $endpoint): bool;
 
-	/**
-	 *   Registers that new API call has been made.
-	 *
-	 * @param string $api_key
-	 * @param string $region
-	 * @param string $endpoint
-	 * @param string|null $app_header
-	 * @param string|null $method_header
-	 */
-	public function registerLimits(string $api_key, string $region, string $endpoint, ?string $app_header, ?string $method_header);
+    /**
+     *   Registers that new API call has been made.
+     *
+     * @param string $api_key
+     * @param string $region
+     * @param string $endpoint
+     * @param string|null $app_header
+     * @param string|null $method_header
+     */
+    public function registerLimits(string $api_key, string $region, string $endpoint, ?string $app_header, ?string $method_header);
 
-	/**
-	 *   Registers that new API call has been made.
-	 *
-	 * @param string $api_key
-	 * @param string $region
-	 * @param string $endpoint
-	 * @param string|null $app_header
-	 * @param string|null $method_header
-	 */
-	public function registerCall(string $api_key, string $region, string $endpoint, ?string $app_header, ?string $method_header);
+    /**
+     *   Registers that new API call has been made.
+     *
+     * @param string $api_key
+     * @param string $region
+     * @param string $endpoint
+     * @param string|null $app_header
+     * @param string|null $method_header
+     */
+    public function registerCall(string $api_key, string $region, string $endpoint, ?string $app_header, ?string $method_header);
 
-	/**
-	 *   Clears all currently saved data.
-	 *
-	 * @return bool
-	 */
-	public function clear(): bool;
+    /**
+     *   Clears all currently saved data.
+     *
+     * @return bool
+     */
+    public function clear(): bool;
 }

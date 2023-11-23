@@ -27,72 +27,73 @@ namespace RiotAPI\Base\Definitions;
  */
 class CallCacheStorage
 {
-	protected array $cache = [];
+    protected array $cache = [];
 
-	/**
-	 *   CallCacheStorage constructor.
-	 */
-	public function __construct() {}
+    /**
+     *   CallCacheStorage constructor.
+     */
+    public function __construct()
+    {
+    }
 
-	/**
-	 *   Clears all currently saved data.
-	 *
-	 * @return bool
-	 */
-	public function clear(): bool
-	{
-		$this->cache = [];
-		return true;
-	}
+    /**
+     *   Clears all currently saved data.
+     *
+     * @return bool
+     */
+    public function clear(): bool
+    {
+        $this->cache = [];
+        return true;
+    }
 
 
-	/**
-	 *   Checks whether or not is $hash call cached.
-	 *
-	 * @param string $hash
-	 *
-	 * @return bool
-	 */
-	public function isCached( string $hash ): bool
-	{
-		if (isset($this->cache[$hash]) == false)
-			return false;
+    /**
+     *   Checks whether or not is $hash call cached.
+     *
+     * @param string $hash
+     *
+     * @return bool
+     */
+    public function isCached(string $hash): bool
+    {
+        if (isset($this->cache[$hash]) == false)
+            return false;
 
-		if ($this->cache[$hash]['expires'] < time())
-		{
-			unset($this->cache[$hash]);
-			return false;
-		}
+        if ($this->cache[$hash]['expires'] < time()) {
+            unset($this->cache[$hash]);
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 *   Loads cached data for given call.
-	 *
-	 * @param string $hash
-	 *
-	 * @return mixed
-	 */
-	public function load( string $hash ): mixed
-	{
-		return $this->isCached($hash)
-			? $this->cache[$hash]['data']
-			: false;
-	}
+    /**
+     *   Loads cached data for given call.
+     *
+     * @param string $hash
+     *
+     * @return mixed
+     */
+    public function load(string $hash): mixed
+    {
+        return $this->isCached($hash)
+            ? $this->cache[$hash]['data']
+            : false;
+    }
 
-	/**
-	 *   Saves given data for call.
-	 *
-	 * @param string $hash
-	 * @param        $data
-	 * @param int    $length
-	 */
-	public function save( string $hash, $data, int $length )
-	{
-		$this->cache[$hash] = [
-			'expires' => time() + $length,
-			'data'    => $data,
-		];
-	}
+    /**
+     *   Saves given data for call.
+     *
+     * @param string $hash
+     * @param        $data
+     * @param int $length
+     */
+    public function save(string $hash, $data, int $length)
+    {
+        $this->cache[$hash] = [
+            'expires' => time() + $length,
+            'data' => $data,
+        ];
+    }
 }

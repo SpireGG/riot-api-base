@@ -25,4 +25,6 @@ namespace RiotAPI\Base\Exceptions;
  *
  * @package RiotAPI\Base\Exceptions
  */
-class DataNotFoundException extends RequestException {}
+class DataNotFoundException extends RequestException
+{
+}

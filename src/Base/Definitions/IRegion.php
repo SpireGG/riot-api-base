@@ -27,27 +27,27 @@ namespace RiotAPI\Base\Definitions;
  */
 interface IRegion
 {
-	const EUROPE = 'europe';
+    const EUROPE = 'europe';
 
-	const AMERICAS = 'americas';
+    const AMERICAS = 'americas';
 
-	const ASIA = 'asia';
+    const ASIA = 'asia';
 
-	const SEA = 'sea';
+    const SEA = 'sea';
 
-	/**
-	 *   Returns region list.
-	 *
-	 * @return array
-	 */
-	public function getList(): array;
+    /**
+     *   Returns region list.
+     *
+     * @return array
+     */
+    public function getList(): array;
 
-	/**
-	 *   Returns region name based on region identifier (can either be string or internal numeric ID).
-	 *
-	 * @param $region
-	 *
-	 * @return string
-	 */
-	public function getRegionName($region): string;
+    /**
+     *   Returns region name based on region identifier (can either be string or internal numeric ID).
+     *
+     * @param $region
+     *
+     * @return string
+     */
+    public function getRegionName($region): string;
 }

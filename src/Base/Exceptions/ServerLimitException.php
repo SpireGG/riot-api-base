@@ -25,4 +25,6 @@ namespace RiotAPI\Base\Exceptions;
  *
  * @package RiotAPI\Base\Exceptions
  */
-class ServerLimitException extends GeneralException {}
+class ServerLimitException extends GeneralException
+{
+}

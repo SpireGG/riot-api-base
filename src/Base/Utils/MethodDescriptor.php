@@ -19,6 +19,8 @@
 
 namespace RiotAPI\Base\Utils;
 
+use ReflectionMethod;
+
 /**
  *   Class MethodDescriptor
  *
@@ -26,79 +28,75 @@ namespace RiotAPI\Base\Utils;
  */
 class MethodDescriptor
 {
-	const CLI_METHOD_NAME = 'cli-name';
-	const CLI_METHOD_NAMESPACE = 'cli-namespace';
+    const CLI_METHOD_NAME = 'cli-name';
+    const CLI_METHOD_NAMESPACE = 'cli-namespace';
 
-	/**
-	 * @param \ReflectionMethod $method
-	 * @return MethodDescriptor
-	 */
-	public static function fromReflectionMethod(\ReflectionMethod $method)
-	{
-		return new self($method->getDocComment());
-	}
+    /**
+     * @param ReflectionMethod $method
+     * @return MethodDescriptor
+     */
+    public static function fromReflectionMethod(ReflectionMethod $method)
+    {
+        return new self($method->getDocComment());
+    }
 
-	/** @var string $description */
-	public $description;
-	/** @var array $props */
-	public $props = [];
+    /** @var string $description */
+    public $description;
+    /** @var array $props */
+    public $props = [];
 
-	/**
-	 * MethodDescriptor constructor.
-	 * @param string $docComment
-	 */
-	public function __construct(string $docComment)
-	{
-		preg_match_all('/@(?<key>\S+)\s+(?<value>.+)?/', $docComment, $matches);
-		foreach ($matches[0] as $index => $source)
-		{
-			$key   = $matches['key'][$index];
-			$value = $matches['value'][$index];
+    /**
+     * MethodDescriptor constructor.
+     * @param string $docComment
+     */
+    public function __construct(string $docComment)
+    {
+        preg_match_all('/@(?<key>\S+)\s+(?<value>.+)?/', $docComment, $matches);
+        foreach ($matches[0] as $index => $source) {
+            $key = $matches['key'][$index];
+            $value = $matches['value'][$index];
 
-			if (isset($this->matches[$key]))
-			{
-				if (!is_array($this->props[$key]))
-					$this->props[$key] = [$this->props[$key]];
+            if (isset($this->matches[$key])) {
+                if (!is_array($this->props[$key]))
+                    $this->props[$key] = [$this->props[$key]];
 
-				$this->props[$key][] = $value;
-			}
-			else
-			{
-				$this->props[$key] = $value;
-			}
-		}
+                $this->props[$key][] = $value;
+            } else {
+                $this->props[$key] = $value;
+            }
+        }
 
-		preg_match('/^([\S\s]+?)\*\s+(@|\*\/)/', $docComment, $matches);
-		$desc = trim(@$matches[1] ?: "");
-		$desc = trim(@$desc, "*/");
-		$this->description = preg_replace('/(\s*\n\s|\s\*\s)/', "", $desc);
-	}
+        preg_match('/^([\S\s]+?)\*\s+(@|\*\/)/', $docComment, $matches);
+        $desc = trim(@$matches[1] ?: "");
+        $desc = trim(@$desc, "*/");
+        $this->description = preg_replace('/(\s*\n\s|\s\*\s)/', "", $desc);
+    }
 
-	/**
-	 * @param $name
-	 *
-	 * @return mixed
-	 */
-	public function getProp($name)
-	{
-		return $this->props[$name];
-	}
+    /**
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function getProp($name)
+    {
+        return $this->props[$name];
+    }
 
-	/**
-	 * @param $name
-	 *
-	 * @return bool
-	 */
-	public function propExists($name)
-	{
-		return isset($this->props[$name]);
-	}
+    /**
+     * @param $name
+     *
+     * @return bool
+     */
+    public function propExists($name)
+    {
+        return isset($this->props[$name]);
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isCLIMethod()
-	{
-		return $this->propExists(self::CLI_METHOD_NAME);
-	}
+    /**
+     * @return bool
+     */
+    public function isCLIMethod()
+    {
+        return $this->propExists(self::CLI_METHOD_NAME);
+    }
 }

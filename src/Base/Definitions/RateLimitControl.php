@@ -29,89 +29,89 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 class RateLimitControl implements IRateLimitControl
 {
-	protected RateLimitStorage $storage;
+    protected RateLimitStorage $storage;
 
-	/**
-	 *   RateLimitControl constructor.
-	 *
-	 * @param IRegion $region
-	 */
-	public function __construct(IRegion $region)
-	{
-		$this->storage = new RateLimitStorage($region);
-	}
+    /**
+     *   RateLimitControl constructor.
+     *
+     * @param IRegion $region
+     */
+    public function __construct(IRegion $region)
+    {
+        $this->storage = new RateLimitStorage($region);
+    }
 
-	/**
-	 *   Clears all currently saved data.
-	 *
-	 * @return bool
-	 */
-	public function clear(): bool
-	{
-		return $this->storage->clear();
-	}
+    /**
+     *   Clears all currently saved data.
+     *
+     * @return bool
+     */
+    public function clear(): bool
+    {
+        return $this->storage->clear();
+    }
 
-	/**
-	 *   Returns currently stored status of limits for given API key, region and endpoint.
-	 *
-	 * @param string $api_key
-	 * @param string $region
-	 * @param string $endpoint
-	 *
-	 * @return array
-	 */
-	#[ArrayShape(["app" => "mixed", "method" => "mixed"])] public function getCurrentStatus(string $api_key, string $region, string $endpoint): array
-	{
-		return [
-			"app" => $this->storage->getAppLimits($api_key, $region),
-			"method" => $this->storage->getMethodLimits($api_key, $region, $endpoint),
-		];
-	}
+    /**
+     *   Returns currently stored status of limits for given API key, region and endpoint.
+     *
+     * @param string $api_key
+     * @param string $region
+     * @param string $endpoint
+     *
+     * @return array
+     */
+    #[ArrayShape(["app" => "mixed", "method" => "mixed"])] public function getCurrentStatus(string $api_key, string $region, string $endpoint): array
+    {
+        return [
+            "app" => $this->storage->getAppLimits($api_key, $region),
+            "method" => $this->storage->getMethodLimits($api_key, $region, $endpoint),
+        ];
+    }
 
-	/**
-	 *   Determines whether or not API call can be made
-	 *
-	 * @param string $api_key
-	 * @param string $region
-	 * @param string $resource
-	 * @param string $endpoint
-	 *
-	 * @return bool
-	 */
-	public function canCall(string $api_key, string $region, string $resource, string $endpoint): bool
-	{
-		return $this->storage->canCall($api_key, $region, $resource, $endpoint);
-	}
+    /**
+     *   Determines whether or not API call can be made
+     *
+     * @param string $api_key
+     * @param string $region
+     * @param string $resource
+     * @param string $endpoint
+     *
+     * @return bool
+     */
+    public function canCall(string $api_key, string $region, string $resource, string $endpoint): bool
+    {
+        return $this->storage->canCall($api_key, $region, $resource, $endpoint);
+    }
 
-	/**
-	 *   Registers that new API call has been made
-	 *
-	 * @param string $api_key
-	 * @param string $region
-	 * @param string $endpoint
-	 * @param string|null $app_limit_header
-	 * @param string|null $method_limit_header
-	 */
-	public function registerLimits(string $api_key, string $region, string $endpoint, ?string $app_limit_header, ?string $method_limit_header)
-	{
-		if ($app_limit_header)
-			$this->storage->registerAppLimits($api_key, $region, $app_limit_header);
+    /**
+     *   Registers that new API call has been made
+     *
+     * @param string $api_key
+     * @param string $region
+     * @param string $endpoint
+     * @param string|null $app_limit_header
+     * @param string|null $method_limit_header
+     */
+    public function registerLimits(string $api_key, string $region, string $endpoint, ?string $app_limit_header, ?string $method_limit_header)
+    {
+        if ($app_limit_header)
+            $this->storage->registerAppLimits($api_key, $region, $app_limit_header);
 
-		if ($method_limit_header)
-			$this->storage->registerMethodLimits($api_key, $region, $endpoint, $method_limit_header);
-	}
+        if ($method_limit_header)
+            $this->storage->registerMethodLimits($api_key, $region, $endpoint, $method_limit_header);
+    }
 
-	/**
-	 *   Registers that new API call has been made
-	 *
-	 * @param string $api_key
-	 * @param string $region
-	 * @param string $endpoint
-	 * @param string|null $app_count_header
-	 * @param string|null $method_count_header
-	 */
-	public function registerCall(string $api_key, string $region, string $endpoint, ?string $app_count_header, ?string $method_count_header)
-	{
-		$this->storage->registerCall($api_key, $region, $endpoint, $app_count_header, $method_count_header);
-	}
+    /**
+     *   Registers that new API call has been made
+     *
+     * @param string $api_key
+     * @param string $region
+     * @param string $endpoint
+     * @param string|null $app_count_header
+     * @param string|null $method_count_header
+     */
+    public function registerCall(string $api_key, string $region, string $endpoint, ?string $app_count_header, ?string $method_count_header)
+    {
+        $this->storage->registerCall($api_key, $region, $endpoint, $app_count_header, $method_count_header);
+    }
 }

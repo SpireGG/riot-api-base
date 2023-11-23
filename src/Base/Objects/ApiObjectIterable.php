@@ -29,34 +29,34 @@ use JetBrains\PhpStorm\Pure;
  */
 abstract class ApiObjectIterable extends ApiObject implements Iterator
 {
-	/**
-	 * @var array
-	 * @internal
-	 */
-	protected $_iterable = [];
+    /**
+     * @var array
+     * @internal
+     */
+    protected $_iterable = [];
 
-	public function rewind(): void
-	{
-		reset($this->_iterable);
-	}
+    public function rewind(): void
+    {
+        reset($this->_iterable);
+    }
 
-	public function current(): mixed
-	{
-		return current($this->_iterable);
-	}
+    public function current(): mixed
+    {
+        return current($this->_iterable);
+    }
 
-	public function key(): string|int|null
-	{
-		return key($this->_iterable);
-	}
+    public function key(): string|int|null
+    {
+        return key($this->_iterable);
+    }
 
-	public function next(): void
-	{
-		next($this->_iterable);
-	}
+    public function next(): void
+    {
+        next($this->_iterable);
+    }
 
-	#[Pure] public function valid(): bool
-	{
-		return ($this->key() !== null && $this->key() !== false);
-	}
+    #[Pure] public function valid(): bool
+    {
+        return ($this->key() !== null && $this->key() !== false);
+    }
 }

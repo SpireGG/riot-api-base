@@ -25,4 +25,6 @@ namespace RiotAPI\Base\Exceptions;
  *
  * @package RiotAPI\Base\Exceptions
  */
-class RequestException extends GeneralException {}
+class RequestException extends GeneralException
+{
+}

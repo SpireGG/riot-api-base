@@ -25,4 +25,6 @@ namespace RiotAPI\Base\Exceptions;
  *
  * @package RiotAPI\Base\Exceptions
  */
-class ForbiddenException extends RequestException {}
+class ForbiddenException extends RequestException
+{
+}
