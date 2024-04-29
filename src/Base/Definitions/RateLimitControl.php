@@ -92,13 +92,15 @@ class RateLimitControl implements IRateLimitControl
      * @param string|null $app_limit_header
      * @param string|null $method_limit_header
      */
-    public function registerLimits(string $api_key, string $region, string $endpoint, ?string $app_limit_header, ?string $method_limit_header)
+    public function registerLimits(string $api_key, string $region, string $endpoint, ?string $app_limit_header, ?string $method_limit_header): void
     {
-        if ($app_limit_header)
+        if ($app_limit_header) {
             $this->storage->registerAppLimits($api_key, $region, $app_limit_header);
+        }
 
-        if ($method_limit_header)
+        if ($method_limit_header) {
             $this->storage->registerMethodLimits($api_key, $region, $endpoint, $method_limit_header);
+        }
     }
 
     /**
@@ -110,7 +112,7 @@ class RateLimitControl implements IRateLimitControl
      * @param string|null $app_count_header
      * @param string|null $method_count_header
      */
-    public function registerCall(string $api_key, string $region, string $endpoint, ?string $app_count_header, ?string $method_count_header)
+    public function registerCall(string $api_key, string $region, string $endpoint, ?string $app_count_header, ?string $method_count_header): void
     {
         $this->storage->registerCall($api_key, $region, $endpoint, $app_count_header, $method_count_header);
     }

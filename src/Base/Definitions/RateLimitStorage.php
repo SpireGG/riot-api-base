@@ -36,8 +36,9 @@ class RateLimitStorage
      */
     public function __construct(IRegion $region)
     {
-        foreach ($region->getList() as $regionId => $regionName)
+        foreach ($region->getList() as $regionId => $regionName) {
             $this->limits[$regionId] = [];
+        }
     }
 
     /**
@@ -144,8 +145,9 @@ class RateLimitStorage
     public function setAppUsed(string $api_key, string $region, int $timeInterval, int $value)
     {
         $this->limits[$region][$api_key]['app'][$timeInterval]['used'] = $value;
-        if ($value == 1)
+        if ($value == 1) {
             $this->limits[$region][$api_key]['app'][$timeInterval]['expires'] = time() + $timeInterval;
+        }
     }
 
     /**
@@ -160,8 +162,9 @@ class RateLimitStorage
     public function setMethodUsed(string $api_key, string $region, string $endpoint, int $timeInterval, int $value)
     {
         $this->limits[$region][$api_key]['method'][$endpoint][$timeInterval]['used'] = $value;
-        if ($value == 1)
+        if ($value == 1) {
             $this->limits[$region][$api_key]['method'][$endpoint][$timeInterval]['expires'] = time() + $timeInterval;
+        }
     }
 
     /**
@@ -182,8 +185,9 @@ class RateLimitStorage
         {
             foreach ($appLimits as $timeInterval => $limits) {
                 //  Check all saved intervals for this region
-                if ($limits['used'] >= $limits['limit'] && $limits['expires'] > time())
+                if ($limits['used'] >= $limits['limit'] && $limits['expires'] > time()) {
                     return false;
+                }
             }
         }
 
@@ -191,8 +195,9 @@ class RateLimitStorage
         if (is_array($methodLimits)) {
             foreach ($methodLimits as $timeInterval => $limits) {
                 //  Check all saved intervals for this endpoint
-                if ($limits['used'] >= $limits['limit'] && $limits['expires'] > time())
+                if ($limits['used'] >= $limits['limit'] && $limits['expires'] > time()) {
                     return false;
+                }
             }
         }
 
@@ -239,14 +244,16 @@ class RateLimitStorage
     {
         if ($app_header) {
             $limits = self::parseLimitHeaders($app_header);
-            foreach ($limits as $interval => $used)
+            foreach ($limits as $interval => $used) {
                 $this->setAppUsed($api_key, $region, $interval, $used);
+            }
         }
 
         if ($method_header) {
             $limits = self::parseLimitHeaders($method_header);
-            foreach ($limits as $interval => $used)
+            foreach ($limits as $interval => $used) {
                 $this->setMethodUsed($api_key, $region, $endpoint, $interval, $used);
+            }
         }
     }
 }

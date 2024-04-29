@@ -40,7 +40,7 @@ abstract class ApiObject implements IApiObject
      *
      * @param array $data
      * @param BaseAPI|null $api
-     * @throws ReflectionException
+     * @throws ReflectionException|GeneralException
      */
     public function __construct(array $data, BaseAPI $api = null)
     {

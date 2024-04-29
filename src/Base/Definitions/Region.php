@@ -33,24 +33,24 @@ class Region implements IRegion
     //     Standard game regions (servers)
     // ==================================================================dd=
 
-    const NORTH_AMERICA = 'na';
-    const EUROPE_WEST = 'euw';
-    const EUROPE_EAST = 'eune';
-    const LAMERICA_SOUTH = 'las';
-    const LAMERICA_NORTH = 'lan';
-    const BRASIL = 'br';
-    const RUSSIA = 'ru';
-    const TURKEY = 'tr';
-    const OCEANIA = 'oce';
-    const KOREA = 'kr';
-    const JAPAN = 'jp';
-    const PHILIPPINES = 'ph';
-    const SINGAPORE = 'sg';
-    const TAIWAN = 'tw';
-    const THAILAND = 'th';
-    const VIETNAM = 'vn';
+    public const NORTH_AMERICA = 'na';
+    public const EUROPE_WEST = 'euw';
+    public const EUROPE_EAST = 'eune';
+    public const LAMERICA_SOUTH = 'las';
+    public const LAMERICA_NORTH = 'lan';
+    public const BRASIL = 'br';
+    public const RUSSIA = 'ru';
+    public const TURKEY = 'tr';
+    public const OCEANIA = 'oce';
+    public const KOREA = 'kr';
+    public const JAPAN = 'jp';
+    public const PHILIPPINES = 'ph';
+    public const SINGAPORE = 'sg';
+    public const TAIWAN = 'tw';
+    public const THAILAND = 'th';
+    public const VIETNAM = 'vn';
 
-    public static $list = array(
+    public static array $list = [
         self::NORTH_AMERICA => self::NORTH_AMERICA,
         self::EUROPE => self::EUROPE,
         self::EUROPE_WEST => self::EUROPE_WEST,
@@ -71,7 +71,7 @@ class Region implements IRegion
         self::TAIWAN => self::TAIWAN,
         self::THAILAND => self::THAILAND,
         self::VIETNAM => self::VIETNAM,
-    );
+    ];
 
 
     // ==================================================================dd=
@@ -89,9 +89,10 @@ class Region implements IRegion
     public function getRegionName($region): string
     {
         $region = strtolower($region);
-        if (!isset($this::$list[$region]))
+        if (!isset($this::$list[$region])) {
             throw new GeneralException('Invalid region provided. Can not find requested region.');
+        }
 
-        return $this::$list[$region];
+        return self::$list[$region];
     }
 }

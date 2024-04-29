@@ -33,29 +33,29 @@ class Platform implements IPlatform
     //     Standard regional platforms
     // ==================================================================dd=
 
-    const NORTH_AMERICA = 'na1';
-    const EUROPE_WEST = 'euw1';
-    const EUROPE_EAST = 'eun1';
-    const LAMERICA_SOUTH = 'la2';
-    const LAMERICA_NORTH = 'la1';
-    const BRASIL = 'br1';
-    const RUSSIA = 'ru';
-    const TURKEY = 'tr1';
-    const OCEANIA = 'oc1';
-    const KOREA = 'kr';
-    const JAPAN = 'jp1';
-    const PHILIPPINES = 'ph2';
-    const SINGAPORE = 'sg2';
-    const TAIWAN = 'tw2';
-    const THAILAND = 'th2';
-    const VIETNAM = 'vn2';
+    public const NORTH_AMERICA = 'na1';
+    public const EUROPE_WEST = 'euw1';
+    public const EUROPE_EAST = 'eun1';
+    public const LAMERICA_SOUTH = 'la2';
+    public const LAMERICA_NORTH = 'la1';
+    public const BRASIL = 'br1';
+    public const RUSSIA = 'ru';
+    public const TURKEY = 'tr1';
+    public const OCEANIA = 'oc1';
+    public const KOREA = 'kr';
+    public const JAPAN = 'jp1';
+    public const PHILIPPINES = 'ph2';
+    public const SINGAPORE = 'sg2';
+    public const TAIWAN = 'tw2';
+    public const THAILAND = 'th2';
+    public const VIETNAM = 'vn2';
 
-    const AMERICAS = 'americas';
-    const EUROPE = 'europe';
-    const ASIA = 'asia';
-    const SEA = 'sea';
+    public const AMERICAS = 'americas';
+    public const EUROPE = 'europe';
+    public const ASIA = 'asia';
+    public const SEA = 'sea';
 
-    public static $list = array(
+    public static array $list = array(
         IRegion::EUROPE => self::EUROPE,
         IRegion::AMERICAS => self::AMERICAS,
         IRegion::ASIA => self::ASIA,
@@ -78,7 +78,7 @@ class Platform implements IPlatform
         Region::VIETNAM => self::VIETNAM,
     );
 
-    public static $continentalRegions = [
+    public static array $continentalRegions = [
         self::AMERICAS,
         self::EUROPE,
         self::ASIA,
@@ -100,10 +100,11 @@ class Platform implements IPlatform
      */
     public function getPlatformNameOfRegion($region): string
     {
-        if (!isset($this::$list[$region]))
+        if (!isset($this::$list[$region])) {
             throw new GeneralException('Invalid region provided. Can not find requested platform.');
+        }
 
-        return $this::$list[$region];
+        return self::$list[$region];
     }
 
     /**
@@ -111,33 +112,12 @@ class Platform implements IPlatform
      */
     public function getCorrespondingContinentRegion($region): string
     {
-        switch ($this->getPlatformNameOfRegion($region)) {
-            case Platform::EUROPE_WEST:
-            case Platform::EUROPE_EAST:
-            case Platform::TURKEY:
-            case Platform::RUSSIA:
-                return IRegion::EUROPE;
-
-            case Platform::NORTH_AMERICA:
-            case Platform::LAMERICA_NORTH:
-            case Platform::LAMERICA_SOUTH:
-            case Platform::BRASIL:
-            case Platform::OCEANIA:
-                return IRegion::AMERICAS;
-
-            case Platform::KOREA:
-            case Platform::JAPAN:
-                return IRegion::ASIA;
-
-            case Platform::PHILIPPINES:
-            case Platform::SINGAPORE:
-            case Platform::TAIWAN:
-            case Platform::THAILAND:
-            case Platform::VIETNAM:
-                return IRegion::SEA;
-
-            default:
-                throw new GeneralException("Unable to convert '$region' platform ID to corresponding continent region.");
-        }
+        return match ($this->getPlatformNameOfRegion($region)) {
+            self::EUROPE_WEST, self::EUROPE_EAST, self::TURKEY, self::RUSSIA => IRegion::EUROPE,
+            self::NORTH_AMERICA, self::LAMERICA_NORTH, self::LAMERICA_SOUTH, self::BRASIL, self::OCEANIA => IRegion::AMERICAS,
+            self::KOREA, self::JAPAN => IRegion::ASIA,
+            self::PHILIPPINES, self::SINGAPORE, self::TAIWAN, self::THAILAND, self::VIETNAM => IRegion::SEA,
+            default => throw new GeneralException("Unable to convert '$region' platform ID to corresponding continent region."),
+        };
     }
 }

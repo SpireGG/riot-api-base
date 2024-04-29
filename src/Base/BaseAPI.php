@@ -213,19 +213,23 @@ abstract class BaseAPI
     {
         //  Checks if required settings are present
         $settings_required = array_merge(self::SETTINGS_REQUIRED, $this::SETTINGS_REQUIRED);
-        foreach ($settings_required as $key)
-            if (!in_array($key, array_keys($settings), true))
+        foreach ($settings_required as $key) {
+            if (!array_key_exists($key, $settings)) {
                 throw new SettingsException("Required settings parameter '$key' is missing!");
+            }
+        }
 
         //  Assigns allowed settings
         $settings_allowed = array_merge(self::SETTINGS_ALLOWED, $this::SETTINGS_ALLOWED);
-        foreach ($settings_allowed as $key)
-            if (isset($settings[$key]))
+        foreach ($settings_allowed as $key) {
+            if (isset($settings[$key])) {
                 $this->settings[$key] = $settings[$key];
+            }
+        }
 
         //  Checks SET_KEY_INCLUDE_TYPE value
         if (isset($settings[self::SET_KEY_INCLUDE_TYPE])
-            && in_array($settings[self::SET_KEY_INCLUDE_TYPE], [self::KEY_AS_HEADER, self::KEY_AS_QUERY_PARAM], true) == false) {
+            && !in_array($settings[self::SET_KEY_INCLUDE_TYPE], [self::KEY_AS_HEADER, self::KEY_AS_QUERY_PARAM], true)) {
             throw new SettingsException("Value of settings parameter '" . self::SET_KEY_INCLUDE_TYPE . "' is not valid.");
         }
 
@@ -236,21 +240,24 @@ abstract class BaseAPI
         $this->_setupDefaultCacheProviderSettings();
 
         //  Setup API object extension classes
-        if ($this->isSettingSet(self::SET_EXTENSIONS))
+        if ($this->isSettingSet(self::SET_EXTENSIONS)) {
             $this->_setupExtensions();
+        }
 
         //  Some caching will be made, let's set up cache provider
-        if ($this->isSettingSet(self::SET_CACHE_CALLS) || $this->isSettingSet(self::SET_CACHE_RATELIMIT))
+        if ($this->isSettingSet(self::SET_CACHE_CALLS) || $this->isSettingSet(self::SET_CACHE_RATELIMIT)) {
             $this->_setupCacheProvider();
+        }
 
         //  Call data are going to be cached
-        if ($this->isSettingSet(self::SET_CACHE_CALLS))
+        if ($this->isSettingSet(self::SET_CACHE_CALLS)) {
             $this->_setupCacheCalls();
+        }
 
         //  Set up before calls callbacks
         $this->_setupBeforeCalls();
 
-        //  Set up afterl calls callbacks
+        //  Set up after calls callbacks
         $this->_setupAfterCalls();
 
         //  Sets platform based on current region
@@ -264,17 +271,20 @@ abstract class BaseAPI
      */
     protected function _setupExtensions(): void
     {
-        if (!is_array($this->getSetting(self::SET_EXTENSIONS)))
+        if (!is_array($this->getSetting(self::SET_EXTENSIONS))) {
             throw new SettingsException("Value of settings parameter '" . self::SET_EXTENSIONS . "' is not valid. Array expected.");
+        }
 
         foreach ($this->getSetting(self::SET_EXTENSIONS) as $extender) {
             try {
                 $ref = new ReflectionClass($extender);
-                if ($ref->implementsInterface(IApiObjectExtension::class) == false)
+                if (!$ref->implementsInterface(IApiObjectExtension::class)) {
                     throw new SettingsException("ObjectExtender '$extender' does not implement IApiObjectExtension interface.");
+                }
 
-                if ($ref->isInstantiable() == false)
+                if (!$ref->isInstantiable()) {
                     throw new SettingsException("ObjectExtender '$extender' is not instantiable.");
+                }
             } catch (ReflectionException $ex) {
                 throw new SettingsException("Value of settings parameter '" . self::SET_EXTENSIONS . "' is not valid.", 0, $ex);
             }
@@ -332,8 +342,9 @@ abstract class BaseAPI
             //  Creates reflection of specified cache provider (can be user-made)
             $cacheProvider = new ReflectionClass($cacheProviderClass);
             //  Checks if this cache provider implements required interface
-            if (!$cacheProvider->implementsInterface(CacheItemPoolInterface::class))
+            if (!$cacheProvider->implementsInterface(CacheItemPoolInterface::class)) {
                 throw new SettingsException("Provided CacheProvider does not implement Psr\Cache\CacheItemPoolInterface (PSR-6)");
+            }
 
             //  and creates new instance of this cache provider
             /** @var CacheItemPoolInterface $instance */
@@ -360,12 +371,14 @@ abstract class BaseAPI
 
             //  Resource caching lengths are specified
             if (is_array($lengths)) {
-                array_walk($lengths, function ($value, $key) {
-                    if ((!is_integer($value) && !is_null($value)) || strpos($key, ':') == false)
+                array_walk($lengths, static function ($value, $key) {
+                    if ((!is_int($value) && !is_null($value)) || !strpos($key, ':')) {
                         throw new SettingsException("Value of settings parameter '" . self::SET_CACHE_CALLS_LENGTH . "' is not valid.");
+                    }
                 });
-            } elseif (!is_integer($lengths))
+            } elseif (!is_int($lengths)) {
                 throw new SettingsException("Value of settings parameter '" . self::SET_CACHE_CALLS_LENGTH . "' is not valid.");
+            }
 
             $new_value = [];
             $resources = $this->resources;
@@ -373,20 +386,23 @@ abstract class BaseAPI
                 //  The value is array, let's check it
                 foreach ($resources as $resource) {
                     if (isset($lengths[$resource])) {
-                        if ($lengths[$resource] > $this->ccc_savetime)
+                        if ($lengths[$resource] > $this->ccc_savetime) {
                             $this->ccc_savetime = $lengths[$resource];
+                        }
 
                         $new_value[$resource] = $lengths[$resource];
-                    } else
+                    } else {
                         $new_value[$resource] = null;
+                    }
                 }
 
             } else {
                 //  The value is numeric, lets set the same limit to all resources
                 $this->ccc_savetime = $lengths;
 
-                foreach ($resources as $resource)
+                foreach ($resources as $resource) {
                     $new_value[$resource] = $lengths;
+                }
             }
             $this->setSetting(self::SET_CACHE_CALLS_LENGTH, $new_value);
         }
@@ -401,18 +417,22 @@ abstract class BaseAPI
     {
         //  API rate limit check before call is made
         $this->beforeCall[] = function () {
-            if ($this->getSetting(self::SET_CACHE_RATELIMIT))
-                if ($this->rlc->canCall($this->getSetting($this->used_key), $this->getSetting(self::SET_REGION), $this->getResource(), $this->getResourceEndpoint()) == false)
+            if ($this->getSetting(self::SET_CACHE_RATELIMIT)) {
+                if (!$this->rlc->canCall($this->getSetting($this->used_key), $this->getSetting(self::SET_REGION), $this->getResource(), $this->getResourceEndpoint())) {
                     throw new ServerLimitException('API call rate limit would be exceeded by this call.');
+                }
+            }
         };
 
         $callbacks = $this->getSetting(self::SET_CALLBACKS_BEFORE, []);
-        if (is_array($callbacks) == false)
+        if (!is_array($callbacks)) {
             $callbacks = [$callbacks];
+        }
 
         foreach ($callbacks as $c) {
-            if (is_callable($c) == false)
+            if (!is_callable($c)) {
                 throw new SettingsException("Provided value of '" . self::SET_CALLBACKS_BEFORE . "' option is not valid.");
+            }
 
             $this->beforeCall[] = $c;
         }
@@ -437,33 +457,38 @@ abstract class BaseAPI
         //  Save result data, if CallCache is enabled and when the old result has expired
         $this->afterCall[] = function () {
             $requestHash = func_get_arg(2);
-            if ($this->getSetting(self::SET_CACHE_CALLS, false) && $this->ccc->isCallCached($requestHash) == false) {
+            if ($this->getSetting(self::SET_CACHE_CALLS, false) && !$this->ccc->isCallCached($requestHash)) {
                 //  Get information for how long to save the data
-                if ($timeInterval = @$this->getSetting(self::SET_CACHE_CALLS_LENGTH)[$this->getResource()])
+                if ($timeInterval = @$this->getSetting(self::SET_CACHE_CALLS_LENGTH)[$this->getResource()]) {
                     $this->ccc->saveCallData($requestHash, $this->result_data_raw, $timeInterval);
+                }
             }
         };
 
         //  Save result data as new DummyData if enabled and if data does not already exist
         $this->afterCall[] = function () {
             $dummyData_file = func_get_arg(3);
-            if ($this->getSetting(self::SET_SAVE_DUMMY_DATA, false) && file_exists($dummyData_file) == false)
+            if ($this->getSetting(self::SET_SAVE_DUMMY_DATA, false) && !file_exists($dummyData_file)) {
                 $this->_saveDummyData($dummyData_file);
+            }
         };
 
         //  Save newly cached data
         $this->afterCall[] = function () {
-            if ($this->getSetting(self::SET_CACHE_CALLS, false) || $this->getSetting(self::SET_CACHE_RATELIMIT, false))
+            if ($this->getSetting(self::SET_CACHE_CALLS, false) || $this->getSetting(self::SET_CACHE_RATELIMIT, false)) {
                 $this->saveCache();
+            }
         };
 
         $callbacks = $this->getSetting(self::SET_CALLBACKS_AFTER, []);
-        if (is_array($callbacks) == false)
+        if (!is_array($callbacks)) {
             $callbacks = [$callbacks];
+        }
 
         foreach ($callbacks as $c) {
-            if (is_callable($c) == false)
+            if (!is_callable($c)) {
                 throw new SettingsException("Provided value of '" . self::SET_CALLBACKS_AFTER . "' option is not valid.");
+            }
 
             $this->afterCall[] = $c;
         }
@@ -526,8 +551,9 @@ abstract class BaseAPI
      */
     protected function saveCache(): bool
     {
-        if (!$this->cache)
+        if (!$this->cache) {
             return false;
+        }
 
         if ($this->getSetting(self::SET_CACHE_RATELIMIT, false)) {
             // Save RateLimitControl
@@ -589,8 +615,9 @@ abstract class BaseAPI
      */
     public function setSetting(string $name, mixed $value): static
     {
-        if (in_array($name, self::SETTINGS_INIT_ONLY + $this::SETTINGS_INIT_ONLY))
+        if (in_array($name, self::SETTINGS_INIT_ONLY + $this::SETTINGS_INIT_ONLY)) {
             throw new SettingsException("Settings option '$name' can only be set on initialization of the library.");
+        }
 
         $this->settings[$name] = $value;
         return $this;
@@ -606,8 +633,9 @@ abstract class BaseAPI
      */
     public function setSettings(array $values): static
     {
-        foreach ($values as $name => $value)
+        foreach ($values as $name => $value) {
             $this->setSetting($name, $value);
+        }
 
         return $this;
     }
@@ -825,8 +853,9 @@ abstract class BaseAPI
     public function nextAsync(callable $onFulfilled = null, callable $onRejected = null, string $group = "default"): static
     {
         $client = @$this->async_clients[$group];
-        if (!$client)
+        if (!$client) {
             $this->async_clients[$group] = $client = new Client($this->getSetting(self::SET_GUZZLE_CLIENT_CFG));
+        }
 
         $this->async_requests[$group][] = $this->next_async_request = new AsyncRequest($client);
         $this->next_async_request->onFulfilled = $onFulfilled;
@@ -844,7 +873,7 @@ abstract class BaseAPI
     {
         /** @var AsyncRequest[] $requests */
         $requests = @$this->async_requests[$group] ?: [];
-        $promises = array_map(function ($r) {
+        $promises = array_map(static function ($r) {
             return $r->getPromise();
         }, $requests);
         Utils::settle($promises);
@@ -889,8 +918,9 @@ abstract class BaseAPI
      */
     protected function makeCall(string $overrideRegion = null, string $method = self::METHOD_GET): PromiseInterface
     {
-        if ($overrideRegion)
+        if ($overrideRegion) {
             $this->setTemporaryRegion($overrideRegion);
+        }
 
         $this->used_method = $method;
 
@@ -911,9 +941,11 @@ abstract class BaseAPI
                 $requestPromise = new FulfilledPromise($this->getResult());
             } catch (RequestException $ex) {
                 // loading failed, check whether an actual request should be made
-                if ($this->getSetting(self::SET_SAVE_DUMMY_DATA, false) == false)
-                    // saving is not allowed, dummydata does not exist
+                if (!$this->getSetting(self::SET_SAVE_DUMMY_DATA, false))
+                    // saving is not allowed, dummy data does not exist
+                {
                     throw $ex;
+                }
             }
         }
 
@@ -926,18 +958,18 @@ abstract class BaseAPI
         if (!$requestPromise) {
             // calls are not cached or this request is not cached
             // perform call to Riot API
-            $guzzle = $this->guzzle;
-            if ($this->next_async_request)
-                $guzzle = $this->next_async_request->client;
+            $guzzle = $this->next_async_request->client ?? $this->guzzle;
 
             $options = $this->getSetting(self::SET_GUZZLE_REQ_CFG);
             $options[RequestOptions::VERIFY] = $this->getSetting(self::SET_VERIFY_SSL);
             $options[RequestOptions::HEADERS] = $requestHeaders;
-            if ($this->post_data)
+            if ($this->post_data) {
                 $options[RequestOptions::BODY] = $this->post_data;
+            }
 
-            if ($this->isSettingSet(self::SET_DEBUG) && $this->getSetting(self::SET_DEBUG))
-                $options[RequestOptions::DEBUG] = fopen('php://stderr', 'w');
+            if ($this->isSettingSet(self::SET_DEBUG) && $this->getSetting(self::SET_DEBUG)) {
+                $options[RequestOptions::DEBUG] = fopen('php://stderr', 'wb');
+            }
 
             // Create HTTP request
             $requestPromise = $guzzle->requestAsync($method, $url, $options);
@@ -954,7 +986,9 @@ abstract class BaseAPI
         $requestPromise = $requestPromise->otherwise(function (Exception $ex) {
             if ($ex instanceof GuzzleHttpExceptions\ServerException) {
                 throw new ServerException("LeagueAPI: Server error occured - {$ex->getMessage()}", $ex->getCode(), $ex);
-            } elseif ($ex instanceof GuzzleHttpExceptions\RequestException) {
+            }
+
+            if ($ex instanceof GuzzleHttpExceptions\RequestException) {
                 $responseHeaders = [];
                 $responseBody = null;
                 $responseCode = $ex->getCode();
@@ -971,11 +1005,13 @@ abstract class BaseAPI
             throw new RequestException("LeagueAPI: Request could not be sent - {$ex->getMessage()}", $ex->getCode(), $ex);
         });
 
-        if ($overrideRegion)
+        if ($overrideRegion) {
             $this->unsetTemporaryRegion();
+        }
 
-        if ($this->next_async_request)
+        if ($this->next_async_request) {
             return $requestPromise;
+        }
 
         $this->query_data = [];
         $this->post_data = null;
@@ -995,24 +1031,27 @@ abstract class BaseAPI
      * @throws ServerLimitException
      * @throws UnauthorizedException
      * @throws UnsupportedMediaTypeException
+     * @throws \JsonException
      * @internal
      *
      */
     protected function processCallResult(array $response_headers = null, string $response_body = null, int $response_code = 0): void
     {
         // flatten response headers array from Guzzle
-        array_walk($response_headers, function (&$value) {
-            if (is_array($value) && count($value) == 1)
+        array_walk($response_headers, static function (&$value) {
+            if (is_array($value) && count($value) === 1) {
                 $value = $value[0];
+            }
         });
 
         $this->result_code = $response_code;
         $this->result_headers = $response_headers;
         $this->result_data_raw = $response_body;
-        $this->result_data = json_decode($response_body, true);
+        $this->result_data = json_decode($response_body, true, 512, JSON_THROW_ON_ERROR);
 
-        if (isset($this->result_headers[self::HEADER_DEPRECATION]))
+        if (isset($this->result_headers[self::HEADER_DEPRECATION])) {
             trigger_error("Used endpoint '{$this->getResourceEndpoint()}' is being deprecated! This endpoint will stop working on " . $this->result_headers[self::HEADER_DEPRECATION] . ".", E_USER_WARNING);
+        }
 
         $message = isset($this->result_data['status']) ? @$this->result_data['status']['message'] : "";
         switch ($response_code) {
@@ -1033,10 +1072,12 @@ abstract class BaseAPI
             case 400:
                 throw new RequestException("LeagueAPI: Request is invalid. $message", $response_code);
             default:
-                if ($response_code >= 500)
+                if ($response_code >= 500) {
                     throw new ServerException("LeagueAPI: Unspecified error occured ($response_code). $message", $response_code);
-                if ($response_code >= 400)
+                }
+                if ($response_code >= 400) {
                     throw new RequestException("LeagueAPI: Unspecified error occured ($response_code). $message", $response_code);
+                }
         }
     }
 
@@ -1055,8 +1096,9 @@ abstract class BaseAPI
     {
         $data = @file_get_contents($this->_getDummyDataFileName());
         $data = @unserialize($data);
-        if (!$data)
+        if (!$data) {
             throw new RequestException("No DummyData available for call. File '{$this->_getDummyDataFileName()}' failed to be parsed.");
+        }
 
         $headers = $data['headers'];
         $response = $data['response'];
@@ -1139,10 +1181,12 @@ abstract class BaseAPI
         $url_queryPart = "";
         foreach ($this->query_data as $key => $value) {
             if (is_array($value)) {
-                foreach ($value as $v)
+                foreach ($value as $v) {
                     $url_queryPart .= "&$key=$v";
-            } else
+                }
+            } else {
                 $url_queryPart .= "&$key=$value";
+            }
         }
         $url_queryPart = substr($url_queryPart, 1);
 
@@ -1151,13 +1195,15 @@ abstract class BaseAPI
         if ($this->getSetting(self::SET_KEY_INCLUDE_TYPE) === self::KEY_AS_QUERY_PARAM) {
             //  API key is to be included as query parameter
             $url_keyPart = "?api_key=" . $this->getSetting($this->used_key);
-            if (!empty($url_queryPart))
+            if (!empty($url_queryPart)) {
                 $url_keyPart .= '&';
+            }
         } elseif ($this->getSetting(self::SET_KEY_INCLUDE_TYPE) === self::KEY_AS_HEADER) {
             //  API key is to be included as request header
             $requestHeaders[self::HEADER_API_KEY] = $this->getSetting($this->used_key);
-            if (!empty($url_queryPart))
+            if (!empty($url_queryPart)) {
                 $url_keyPart = '?';
+            }
         }
 
         return "https://" . $url_platformPart . $url_basePart . $this->endpoint . $url_keyPart . $url_queryPart;
@@ -1176,8 +1222,9 @@ abstract class BaseAPI
         $endp = str_replace(['/', '.'], ['-', ''], substr($this->endpoint, 1));
         $quer = str_replace(['&', '%26', '=', '%3D'], ['_', '_', '-', '-'], http_build_query($this->query_data));
         $data = !empty($this->post_data) ? '_' . md5(http_build_query($this->query_data)) : '';
-        if (strlen($quer))
+        if (strlen($quer)) {
             $quer = "_" . $quer;
+        }
 
         return __DIR__ . "/../../tests/DummyData/{$method}_$endp$quer$data.json";
     }

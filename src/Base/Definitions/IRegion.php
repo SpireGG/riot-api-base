@@ -27,13 +27,13 @@ namespace RiotAPI\Base\Definitions;
  */
 interface IRegion
 {
-    const EUROPE = 'europe';
+    public const EUROPE = 'europe';
 
-    const AMERICAS = 'americas';
+    public const AMERICAS = 'americas';
 
-    const ASIA = 'asia';
+    public const ASIA = 'asia';
 
-    const SEA = 'sea';
+    public const SEA = 'sea';
 
     /**
      *   Returns region list.

@@ -63,10 +63,10 @@ interface IRateLimitControl
      * @param string $api_key
      * @param string $region
      * @param string $endpoint
-     * @param string|null $app_header
-     * @param string|null $method_header
+     * @param string|null $app_limit_header
+     * @param string|null $method_limit_header
      */
-    public function registerLimits(string $api_key, string $region, string $endpoint, ?string $app_header, ?string $method_header);
+    public function registerLimits(string $api_key, string $region, string $endpoint, ?string $app_limit_header, ?string $method_limit_header);
 
     /**
      *   Registers that new API call has been made.
