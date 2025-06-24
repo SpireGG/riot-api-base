@@ -885,10 +885,9 @@ abstract class BaseAPI
      * @param PromiseInterface $promise
      * @param callable|null $resultCallback
      *
-     * @return null
      * @internal
      */
-    public function resolveOrEnqueuePromise(PromiseInterface $promise, ?callable $resultCallback = null): null
+    public function resolveOrEnqueuePromise(PromiseInterface $promise, ?callable $resultCallback = null)
     {
         if ($this->next_async_request) {
             $promise = $promise->then(function ($result) use ($resultCallback) {

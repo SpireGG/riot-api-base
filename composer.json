@@ -5,7 +5,7 @@
 	"keywords": ["riot", "api", "wrapper", "base", "php8"],
 	"homepage": "https://github.com/spiregg/riot-api-base",
 	"license": "GPL-3.0-or-later",
-	"version": "2.4.0",
+	"version": "2.4.1",
 	"authors": [
 		{
 			"name": "Chypriote",
