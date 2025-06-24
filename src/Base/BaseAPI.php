@@ -209,7 +209,7 @@ abstract class BaseAPI
      * @throws SettingsException
      * @throws InvalidArgumentException
      */
-    public function __construct(array $settings, IRegion $custom_regionDataProvider = null, IPlatform $custom_platformDataProvider = null)
+    public function __construct(array $settings, ?IRegion $custom_regionDataProvider = null, ?IPlatform $custom_platformDataProvider = null)
     {
         //  Checks if required settings are present
         $settings_required = array_merge(self::SETTINGS_REQUIRED, $this::SETTINGS_REQUIRED);
@@ -850,7 +850,7 @@ abstract class BaseAPI
      *
      * @return $this
      */
-    public function nextAsync(callable $onFulfilled = null, callable $onRejected = null, string $group = "default"): static
+    public function nextAsync(?callable $onFulfilled = null, ?callable $onRejected = null, string $group = "default"): static
     {
         $client = @$this->async_clients[$group];
         if (!$client) {
@@ -878,8 +878,7 @@ abstract class BaseAPI
         }, $requests);
         Utils::settle($promises);
 
-        unset($this->async_clients[$group]);
-        unset($this->async_requests[$group]);
+        unset($this->async_clients[$group], $this->async_requests[$group]);
     }
 
     /**
@@ -889,7 +888,7 @@ abstract class BaseAPI
      * @return null
      * @internal
      */
-    function resolveOrEnqueuePromise(PromiseInterface $promise, callable $resultCallback = null)
+    public function resolveOrEnqueuePromise(PromiseInterface $promise, ?callable $resultCallback = null): null
     {
         if ($this->next_async_request) {
             $promise = $promise->then(function ($result) use ($resultCallback) {
@@ -916,7 +915,7 @@ abstract class BaseAPI
      *   Makes call to LeagueAPI.
      *
      */
-    protected function makeCall(string $overrideRegion = null, string $method = self::METHOD_GET): PromiseInterface
+    protected function makeCall(?string $overrideRegion = null, string $method = self::METHOD_GET): PromiseInterface
     {
         if ($overrideRegion) {
             $this->setTemporaryRegion($overrideRegion);
@@ -1035,7 +1034,7 @@ abstract class BaseAPI
      * @internal
      *
      */
-    protected function processCallResult(array $response_headers = null, string $response_body = null, int $response_code = 0): void
+    protected function processCallResult(?array $response_headers = null, ?string $response_body = null, int $response_code = 0): void
     {
         // flatten response headers array from Guzzle
         array_walk($response_headers, static function (&$value) {
@@ -1222,7 +1221,7 @@ abstract class BaseAPI
         $endp = str_replace(['/', '.'], ['-', ''], substr($this->endpoint, 1));
         $quer = str_replace(['&', '%26', '=', '%3D'], ['_', '_', '-', '-'], http_build_query($this->query_data));
         $data = !empty($this->post_data) ? '_' . md5(http_build_query($this->query_data)) : '';
-        if (strlen($quer)) {
+        if ($quer !== '') {
             $quer = "_" . $quer;
         }
 
@@ -1250,7 +1249,7 @@ abstract class BaseAPI
      * @internal
      *
      */
-    public function makeTestEndpointCall($specs, string $region = null, string $method = null): mixed
+    public function makeTestEndpointCall($specs, ?string $region = null, ?string $method = null): mixed
     {
         $resultPromise = $this->setEndpoint("/lol/test-endpoint/v0/$specs")
             ->setResource("v0", "/lol/test-endpoint/v0/%s")

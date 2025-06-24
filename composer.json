@@ -2,10 +2,10 @@
 	"name": "spiregg/riot-api-base",
 	"type": "library",
 	"description": "Generic base for simple Riot API PHP wrapper implementation.",
-	"keywords": ["riot", "api", "wrapper", "base", "php7"],
+	"keywords": ["riot", "api", "wrapper", "base", "php8"],
 	"homepage": "https://github.com/spiregg/riot-api-base",
 	"license": "GPL-3.0-or-later",
-	"version": "2.3.0",
+	"version": "2.4.0",
 	"authors": [
 		{
 			"name": "Chypriote",
@@ -25,7 +25,7 @@
 		"guzzlehttp/guzzle": "^7.8|^6.5",
 		"symfony/cache": "^7.0|^6.3",
 		"psr/cache": "^3",
-		"php": ">=8.1",
+		"php": ">=8.2",
 		"ext-json": "*"
 	},
 	"require-dev": {

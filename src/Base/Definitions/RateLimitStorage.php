@@ -73,7 +73,7 @@ class RateLimitStorage
      * @param string $region
      * @param array $limits
      */
-    public function initApp(string $api_key, string $region, array $limits)
+    public function initApp(string $api_key, string $region, array $limits): void
     {
         $output = [];
         foreach ($limits as $interval => $limit) {
@@ -94,7 +94,7 @@ class RateLimitStorage
      * @param string $endpoint
      * @param array $limits
      */
-    public function initMethod(string $api_key, string $region, string $endpoint, array $limits)
+    public function initMethod(string $api_key, string $region, string $endpoint, array $limits): void
     {
         $output = [];
         foreach ($limits as $interval => $limit) {
@@ -142,7 +142,7 @@ class RateLimitStorage
      * @param int $timeInterval
      * @param int $value
      */
-    public function setAppUsed(string $api_key, string $region, int $timeInterval, int $value)
+    public function setAppUsed(string $api_key, string $region, int $timeInterval, int $value): void
     {
         $this->limits[$region][$api_key]['app'][$timeInterval]['used'] = $value;
         if ($value == 1) {
@@ -159,7 +159,7 @@ class RateLimitStorage
      * @param int $timeInterval
      * @param int $value
      */
-    public function setMethodUsed(string $api_key, string $region, string $endpoint, int $timeInterval, int $value)
+    public function setMethodUsed(string $api_key, string $region, string $endpoint, int $timeInterval, int $value): void
     {
         $this->limits[$region][$api_key]['method'][$endpoint][$timeInterval]['used'] = $value;
         if ($value == 1) {
@@ -211,7 +211,7 @@ class RateLimitStorage
      * @param string $region
      * @param string $app_header
      */
-    public function registerAppLimits(string $api_key, string $region, string $app_header)
+    public function registerAppLimits(string $api_key, string $region, string $app_header): void
     {
         $limits = self::parseLimitHeaders($app_header);
         $this->initApp($api_key, $region, $limits);
@@ -225,7 +225,7 @@ class RateLimitStorage
      * @param string $endpoint
      * @param string $method_header
      */
-    public function registerMethodLimits(string $api_key, string $region, string $endpoint, string $method_header)
+    public function registerMethodLimits(string $api_key, string $region, string $endpoint, string $method_header): void
     {
         $limits = self::parseLimitHeaders($method_header);
         $this->initMethod($api_key, $region, $endpoint, $limits);
@@ -240,7 +240,7 @@ class RateLimitStorage
      * @param string|null $app_header
      * @param string|null $method_header
      */
-    public function registerCall(string $api_key, string $region, string $endpoint, string $app_header = null, string $method_header = null)
+    public function registerCall(string $api_key, string $region, string $endpoint, ?string $app_header = null, ?string $method_header = null): void
     {
         if ($app_header) {
             $limits = self::parseLimitHeaders($app_header);
