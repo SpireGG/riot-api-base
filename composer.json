@@ -5,7 +5,7 @@
 	"keywords": ["riot", "api", "wrapper", "base", "php8"],
 	"homepage": "https://github.com/spiregg/riot-api-base",
 	"license": "GPL-3.0-or-later",
-	"version": "2.4.1",
+	"version": "2.4.2",
 	"authors": [
 		{
 			"name": "Chypriote",
@@ -23,7 +23,7 @@
 	},
 	"require": {
 		"guzzlehttp/guzzle": "^7.8|^6.5",
-		"symfony/cache": "^7.0|^6.3",
+		"symfony/cache": "^8.0|^7.0|^6.3",
 		"psr/cache": "^3",
 		"php": ">=8.2",
 		"ext-json": "*"
